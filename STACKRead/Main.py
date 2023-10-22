@@ -13,7 +13,6 @@ def side_panel_switch():
         retract()
         return
     
- 
 def protract():
     title_frame.place(x=title_frame.winfo_x()+15)
     
@@ -157,8 +156,6 @@ home_lastread_frame_inner.place(x = 10, y = 40)
 home_lastread_button = customtkinter.CTkButton(home_lastread_frame_outer,width=150,height=30,font=("Quando",.00002*(window_width*window_height)),fg_color="#737373",corner_radius=0,text="Last Read")
 home_lastread_button.place(x = 10, y = 10)
 
-
-
 # home_bookmark_frame_inner = customtkinter.CTkFrame(home_frame,width=750,height=150,fg_color="#B88B68",corner_radius=0)
 # home_bookmark_frame_inner.place(x = (window_width/2)-400, y = 100)
 
@@ -221,5 +218,5 @@ button_label_library.place(x = 0 , y = 300)
 # button_label_settings = customtkinter.CTkButton(title_frame, text="Settings",width=100,height=50,corner_radius=0,fg_color="transparent",font=("Quando",16),text_color="black")
 # button_label_settings.place(x = 0, y = 430)
 
-# Loop
+# Main Loop
 Main_app.mainloop()
