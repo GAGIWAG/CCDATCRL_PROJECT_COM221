@@ -32,7 +32,6 @@ def retract():
         Main_app.after(10,retract)
 
 def show_main_frame_content(text):
-    print(text)
     if text == "Home":
         library_frame.pack_forget()
         search_frame.pack_forget()
@@ -67,8 +66,11 @@ screen_width = Main_app.winfo_screenwidth()
 screen_height = Main_app.winfo_screenheight()
 
 # Calculate the desired window size as a fraction of the screen dimensions
-window_width = int(screen_width * .9)  # Adjust the fraction as needed
+window_width = int(screen_width * .85)  # Adjust the fraction as needed
 window_height = int(screen_height * 0.85)  # Adjust the fraction as needed
+
+print(window_width)
+print(window_height)
 
 # Set the window size and position it in the center of the screen
 x_position = (screen_width - window_width) // 2
@@ -94,22 +96,81 @@ title_frame.place(x = -75, y = 0)
 icon_frame = customtkinter.CTkFrame(Main_app,width=76,height=Main_app.winfo_screenheight(),fg_color="#CCD5AE",corner_radius=0)
 icon_frame.place(x = 0, y = 0)
 
-
 # Main Content Frames
 
 # Home Content
-label_title_home = customtkinter.CTkLabel(home_frame, text="Home",width=home_frame.winfo_width(),height=50,font=("Quando",50),fg_color="transparent",text_color="black")
-label_title_home.place(x=(window_width/2)-125,y=0)
+home_search_entry_frame = customtkinter.CTkFrame(home_frame,width=650,height=50,fg_color="transparent",corner_radius=45)
+home_search_entry_frame.place(x = (window_width/2)-325, y = 20)
 
+home_search_entry = customtkinter.CTkEntry(home_search_entry_frame,width=550,height=50,fg_color="white",corner_radius=45,placeholder_text="Search Titles...",font=("Quando",.00002*(window_width*window_height)))
+home_search_entry.place(x = 0,y=0)
+
+home_search_entry_button_img = customtkinter.CTkImage((Image.open("icons\searchicon.png")),size=(25,25))
+home_search_entry_button = customtkinter.CTkButton(home_search_entry_frame,text="",image=home_search_entry_button_img,width=46,height=46,fg_color="transparent",corner_radius=45,border_color="white",hover_color="#CCD5AE")
+home_search_entry_button.place(x=550,y=2)
+
+home_top_shelf_frame_outer = customtkinter.CTkFrame(home_frame,width=750,height=150,fg_color="#B88B68",corner_radius=0)
+home_top_shelf_frame_outer.place(x = (window_width/2)-400, y = 100)
+
+home_top_shelf_frame_inner = customtkinter.CTkFrame(home_top_shelf_frame_outer,width=730,height=130,fg_color="#614D40",corner_radius=0)
+home_top_shelf_frame_inner.place(x = 10, y = 10)
+
+home_top_shelf_image_frame = customtkinter.CTkFrame(home_top_shelf_frame_inner,width=100,height=126,fg_color="#B88B68",corner_radius=0)
+home_top_shelf_image_frame.place(x = 121, y = 2)
+
+home_top_shelf_image_label = customtkinter.CTkLabel(home_top_shelf_image_frame,corner_radius=0,text="Image Goes Here")
+home_top_shelf_image_label.place(x = 0, y = 50)
+
+home_top_shelf_title_label = customtkinter.CTkLabel(home_top_shelf_frame_inner,anchor=customtkinter.W,font=("Quando",.00002*(window_width*window_height)),text_color="white",width=350,height=35,fg_color="transparent",corner_radius=0,text="Title Goes Here")
+home_top_shelf_title_label.place(x = 225, y = 10)
+
+home_top_shelf_author_label = customtkinter.CTkLabel(home_top_shelf_frame_inner,anchor=customtkinter.W,font=("Quando",.00002*(window_width*window_height)),text_color="white",width=350,height=35,fg_color="transparent",corner_radius=0,text="Author Goes Here")
+home_top_shelf_author_label.place(x = 225, y = 40)
+
+home_top_shelf_text_label_img = customtkinter.CTkImage((Image.open("icons\shelftoptext.png")),size=(50,50))
+home_top_shelf_text_label = customtkinter.CTkLabel(home_frame,image=home_top_shelf_text_label_img,width=25,height=25,fg_color="white",corner_radius=0,text="")
+home_top_shelf_text_label.place(x = 295, y = 75)
+
+home_top_shelf_previous_button = customtkinter.CTkButton(home_top_shelf_frame_inner,width=35,height=35,font=("Quando",.00002*(window_width*window_height)),fg_color="transparent",corner_radius=0,text="<",text_color="white")
+home_top_shelf_previous_button.place(x = 660, y = 95)
+
+home_top_shelf_next_button = customtkinter.CTkButton(home_top_shelf_frame_inner,width=35,height=35,font=("Quando",.00002*(window_width*window_height)),fg_color="transparent",corner_radius=0,text=">",text_color="white")
+home_top_shelf_next_button.place(x = 695, y = 95)
+
+home_bookmark_frame_outer = customtkinter.CTkFrame(home_frame,width=405,height=510,fg_color="transparent",corner_radius=0)
+home_bookmark_frame_outer.place(x = (window_width/2)-425, y = 260)
+
+home_bookmark_frame_inner = customtkinter.CTkFrame(home_bookmark_frame_outer,width=355,height=470,fg_color="#B88B68",corner_radius=0)
+home_bookmark_frame_inner.place(x = 10, y = 40)
+
+home_bookmark_button = customtkinter.CTkButton(home_bookmark_frame_outer,width=150,height=30,font=("Quando",.00002*(window_width*window_height)),fg_color="#737373",corner_radius=0,text="Bookmarks")
+home_bookmark_button.place(x = 10, y = 10)
+
+home_lastread_frame_outer = customtkinter.CTkFrame(home_frame,width=405,height=510,fg_color="transparent",corner_radius=0)
+home_lastread_frame_outer.place(x = (window_width/2)-20, y = 260)
+
+home_lastread_frame_inner = customtkinter.CTkFrame(home_lastread_frame_outer,width=355,height=470,fg_color="#B88B68",corner_radius=0)
+home_lastread_frame_inner.place(x = 10, y = 40)
+
+home_lastread_button = customtkinter.CTkButton(home_lastread_frame_outer,width=150,height=30,font=("Quando",.00002*(window_width*window_height)),fg_color="#737373",corner_radius=0,text="Last Read")
+home_lastread_button.place(x = 10, y = 10)
+
+
+
+# home_bookmark_frame_inner = customtkinter.CTkFrame(home_frame,width=750,height=150,fg_color="#B88B68",corner_radius=0)
+# home_bookmark_frame_inner.place(x = (window_width/2)-400, y = 100)
+
+# Bookmark Content
 label_title_bookmark = customtkinter.CTkLabel(bookmark_frame, text="Bookmark",width=bookmark_frame.winfo_width(),height=50,font=("Quando",50),fg_color="transparent",text_color="black")
 label_title_bookmark.place(x=(window_width/2)-125,y=0)
 
+# Search Content
 label_title_search = customtkinter.CTkLabel(search_frame, text="Search",width=search_frame.winfo_width(),height=50,font=("Quando",50),fg_color="transparent",text_color="black")
 label_title_search.place(x=(window_width/2)-125,y=0)
 
+# Library Content
 label_title_library = customtkinter.CTkLabel(library_frame, text="Library",width=library_frame.winfo_width(),height=50,font=("Quando",50),fg_color="transparent",text_color="black")
 label_title_library.place(x=(window_width/2)-125,y=0)
-
 
 # Title and Icon Frame Content
 button_stackread_img = customtkinter.CTkImage((Image.open("icons\stackreadicon.png")),size=(50,50))
