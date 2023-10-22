@@ -1,9 +1,7 @@
-import tkinter as tk
+import tkinter 
 import customtkinter
 import math
-import os
-from PIL import ImageTk,Image
-from time import time
+from PIL import Image
 
 def side_panel_switch():
     if (math.floor(title_frame.winfo_x()) == -75):
