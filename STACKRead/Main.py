@@ -96,6 +96,8 @@ title_frame.place(x = -75, y = 0)
 icon_frame = customtkinter.CTkFrame(Main_app,width=76,height=Main_app.winfo_screenheight(),fg_color="#CCD5AE",corner_radius=0)
 icon_frame.place(x = 0, y = 0)
 
+show_main_frame_content("Home")
+
 # Main Content Frames
 
 # Home Content
