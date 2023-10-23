@@ -4,6 +4,7 @@ import math
 from PIL import Image
 
 def side_panel_switch():
+    print(title_frame.winfo_x())
     if (math.floor(title_frame.winfo_x()) == -75):
         protract()
         return
@@ -24,7 +25,6 @@ def retract():
     
     if  math.floor(title_frame.winfo_x()) == -60:
         Main_app.after_cancel(retract)
-        
     else:
         Main_app.after(10,retract)
 
@@ -58,13 +58,16 @@ customtkinter.set_default_color_theme("blue")
 Main_app  = customtkinter.CTk()
 Main_app.title("STACKRead")
 
+print(Main_app.winfo_screenwidth())
+print(Main_app.winfo_screenheight())
+
 # Get the screen dimensions
-screen_width = Main_app.winfo_screenwidth()
-screen_height = Main_app.winfo_screenheight()
+screen_width = 1600
+screen_height = 900
 
 # Calculate the desired window size as a fraction of the screen dimensions
-window_width = int(screen_width * .85)  # Adjust the fraction as needed
-window_height = int(screen_height * 0.85)  # Adjust the fraction as needed
+window_width = 1360  
+window_height = 765  
 
 print(window_width)
 print(window_height)
