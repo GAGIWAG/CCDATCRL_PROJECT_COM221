@@ -59,8 +59,7 @@ class HashTable:
         return None
 
 def main():
-    size = int(input("Enter the size of the hash table: "))
-    hash_table = HashTable(size)
+    hash_table = HashTable(5)
 
     while True:
         print("\nMenu:")
@@ -89,11 +88,11 @@ def main():
             hash_table.remove(key)
             print(f"Key '{key}' removed from the hash table.")
         elif choice == "4":
-            filename = input("Enter the Excel filename to save to: ")
+            filename = 'database.xlsx'
             hash_table.save_to_excel(filename)
             print(f"Data saved to '{filename}'.")
         elif choice == "5":
-            filename = input("Enter the Excel filename to load from: ")
+            filename = 'database.xlsx'
             hash_table.load_from_excel(filename)
             print(f"Data loaded from '{filename}'.")
         elif choice == "6":
