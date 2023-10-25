@@ -1,62 +1,44 @@
-import tkinter as tk
+import tkinter
+import customtkinter  # <- import the CustomTkinter module
+from PIL import Image
 
-def toggle_panel():
-    if panel_frame.winfo_viewable():
-        panel_frame.pack_forget()
-        stop_animations()
-    else:
-        panel_frame.pack(side="left", fill="y")
-        start_animations()
-
-def toggle_button(button_num):
-    for i in range(1, 6):
-        if i == button_num:
-            buttons[i-1].config(relief="sunken")
-            labels[i-1].config(fg="red")
+def click(text):
+    if text == "But1":
+        print("But 1 Pressed")
+        button_home.configure(state="disabled")
+        button2.configure(state="normal")
+        if button_home.cget("state") == "disabled":
+            disabled_butt1_icon = customtkinter.CTkImage((Image.open("icons\homeclicked.png")),size=(50,50))
+            button_home.configure(image=disabled_butt1_icon)
+            butt2_icon = customtkinter.CTkImage((Image.open("icons\libraryunclicked.png")),size=(50,50))
+            button2.configure(image=butt2_icon)
         else:
-            buttons[i-1].config(relief="raised")
-            labels[i-1].config(fg="black")
+            butt1_icon = customtkinter.CTkImage((Image.open("icons\homeunclicked.png")),size=(50,50))
+            button_home.configure(image=butt1_icon)
+     
+    if text == "But2":    
+        print("But 2 Pressed")
+        button_home.configure(state="normal")
+        button2.configure(state="disabled")
+        if button2.cget("state") == "disabled":
+            disabled_butt2_icon = customtkinter.CTkImage((Image.open("icons\libraryclicked.png")),size=(50,50))
+            button2.configure(image=disabled_butt2_icon)
+            butt1_icon = customtkinter.CTkImage((Image.open("icons\homeunclicked.png")),size=(50,50))
+            button_home.configure(image=butt1_icon)
+        else:
+            butt2_icon = customtkinter.CTkImage((Image.open("icons\libraryunclicked.png")),size=(50,50))
+            button2.configure(image=butt2_icon)
 
-def animate_button_color_change(button_index, color, interval_ms):
-    if buttons[button_index].cget("relief") == "sunken":
-        labels[button_index].config(fg=color)
-        root.after(interval_ms, animate_button_color_change, button_index, "black", interval_ms)
-    else:
-        labels[button_index].config(fg="black")
+root_tk = tkinter.Tk()  # create the Tk window like you normally do
+root_tk.geometry("400x240")
+root_tk.title("CustomTkinter Test")
 
-def start_animations():
-    for i in range(5):
-        animate_button_color_change(i, "red", int(1000 / 24))
+button_home = customtkinter.CTkImage((Image.open("icons\homeunclicked.png")),size=(50,50))
+button_home = customtkinter.CTkButton(master=root_tk,text="",image=button_home, corner_radius=10, command=lambda: click("But1"), state="normal",width=25,height=25)
+button_home.place(x=50,y=0)
 
-def stop_animations():
-    for i in range(5):
-        root.after_cancel(animate_button_color_change, i)
+butt2_icon = customtkinter.CTkImage((Image.open("icons\libraryunclicked.png")),size=(50,50))
+button2 = customtkinter.CTkButton(master=root_tk,text="",image=butt2_icon, corner_radius=10, command=lambda: click("But2"), state="normal",width=25,height=25)
+button2.place(x=50,y=70)
 
-root = tk.Tk()
-root.title("Collapsible Side Panel")
-
-# Create a button to toggle the panel
-panel_button = tk.Button(root, text="Toggle Panel", command=toggle_panel)
-panel_button.pack(padx=10, pady=10, side="left")
-
-# Create a frame for the side panel
-panel_frame = tk.Frame(root, bg="lightgray", width=200)
-
-# Define button text
-button_texts = ["Button 1", "Button 2", "Button 3", "Button 4", "Button 5"]
-
-# Create buttons with labels inside the panel frame
-buttons = []
-labels = []
-for i in range(5):
-    button = tk.Button(panel_frame, text=button_texts[i], command=lambda i=i+1: toggle_button(i))
-    button_label = tk.Label(panel_frame, text=f"{button_texts[i]} Label")
-    button_label.pack()
-    button.pack(padx=10, pady=10, fill="x")
-    buttons.append(button)
-    labels.append(button_label)
-
-# Initially press the first button
-toggle_button(1)
-
-root.mainloop()
+root_tk.mainloop()
