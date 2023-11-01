@@ -608,6 +608,5 @@ button_label_addbooks.place(x = 0, y = 570)
 button_label_log_out = customtkinter.CTkButton(title_frame,anchor="w", text="Log Out",width=150,height=75,corner_radius=0,fg_color="transparent",font=("Quando",20),text_color="black",hover=False)
 button_label_log_out.place(x = 0, y = 650)
 
-
 # Main Loop
 Main_app.mainloop()
