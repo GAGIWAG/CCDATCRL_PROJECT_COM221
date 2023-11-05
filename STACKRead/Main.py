@@ -552,8 +552,8 @@ library_search_entry = customtkinter.CTkEntry(library_search_entry_frame,width=4
 library_search_entry.place(x = 0,y=0)
 
 library_search_entry_button_img = customtkinter.CTkImage((Image.open("icons\\searchicon.png")),size=(55,55))
-library_search_entry_button = customtkinter.CTkButton(library_search_entry,text="",image=home_search_entry_button_img,width=15,height=15,fg_color="transparent",hover=False)
-library_search_entry_button.place(x = 395 , y=2.5)
+library_search_entry_button = customtkinter.CTkButton(library_search_entry,text="",image=home_search_entry_button_img,width=10,height=10,fg_color="transparent")
+library_search_entry_button.place(x = 390 , y=2.5)
 
 
 library_reading_button = customtkinter.CTkButton(library_library_inner_frame,width=100,height=40,font=("Quando",20),fg_color="#433F3D", hover_color="#B88B68",corner_radius=0,text="Reading")
