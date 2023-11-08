@@ -13,7 +13,6 @@ def side_panel_switch():
         button_collapse.configure(text=">")
         return
     
- 
 def protract():
     title_frame.place(x=title_frame.winfo_x()+10)
     
