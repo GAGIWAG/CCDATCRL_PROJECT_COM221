@@ -210,11 +210,11 @@ def log_in_clock():
     rtc = datetime.datetime.now()
     if (rtc.hour < 12):
         if (rtc.hour == 12):
-            hr_min_time = "{:02d}:{:02d} AM".format(rtc.hour+12,rtc.minute)
+            hr_min_time = "{:02d}:{:02d}:{:02d} AM".format(rtc.hour+12,rtc.minute,rtc.second)
         else:
-            hr_min_time = "{:02d}:{:02d} AM".format(rtc.hour,rtc.minute)
+            hr_min_time = "{:02d}:{:02d}:{:02d} AM".format(rtc.hour,rtc.minute,rtc.second)
     else:
-        hr_min_time = "{:02d}:{:02d} PM".format(rtc.hour-12,rtc.minute)
+        hr_min_time = "{:02d}:{:02d}:{:02d} PM".format(rtc.hour-12,rtc.minute,rtc.second)
     login_clock_label.configure(text=hr_min_time)
     Main_app.after(1000,log_in_clock)
 
@@ -603,7 +603,7 @@ login_button.place(x=250,y=170)
 login_clock_frame = customtkinter.CTkFrame(log_in_frame,width=825,height=325,fg_color="#D9D9D9",corner_radius=25)
 login_clock_frame.place(x=260,y=470)
 
-login_clock_label = customtkinter.CTkLabel(login_clock_frame,text="12:00 AM",width=725,height=195,text_color="white",fg_color="#292D32",corner_radius=25,font=("Quando",65))
+login_clock_label = customtkinter.CTkLabel(login_clock_frame,text="12:00 AM",width=725,height=195,text_color="white",fg_color="#292D32",corner_radius=25,font=("Quando",45))
 login_clock_label.place(x=50,y=50)
 
 login_no_account_label = customtkinter.CTkLabel(login_clock_frame,text="Don't have an account?",width=150,height=25,fg_color="transparent",text_color="black",corner_radius=25,font=("Quando",20))
