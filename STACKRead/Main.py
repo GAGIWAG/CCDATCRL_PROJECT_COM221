@@ -265,7 +265,7 @@ def sign_in():
     email = sign_in_email_entry.get()
     
     if username != "" and password != "" and email != "":
-        user_credentials[username] = (email, password)
+        user_credentials[username] = (password)
         save_user_credentials()
         to_log_in()
         
@@ -483,7 +483,6 @@ for row in sheet.iter_rows(values_only=True):
         'keywords': row[6]  
     }
     book_info_stack.append(book_info)
-
 
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\FOR GUI\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\#
 
@@ -1029,7 +1028,6 @@ def create_results_frame():
     # Create a new frame to display search results in a scrollable area
     results_frame = customtkinter.CTkFrame(outer_frame,fg_color="transparent")
     results_frame.pack()
-
 
 def display_search_results(results):
     global results_frame
