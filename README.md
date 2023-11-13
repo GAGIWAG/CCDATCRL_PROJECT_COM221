@@ -4,12 +4,12 @@ COM221_CCDATRCL_FINAL_PROJECT
 
 Group 5:
 
-Basilio, John Angelo 
-Bonilla, Iber Joseph 
-espaldon, RObbie “byvoie” 
-Fat, Andrew Laurence
-MaraÑo, jasper eric 
-Tamparong, DHan Micheal 
+- Basilio, John Angelo 
+- Bonilla, Iber Joseph 
+- Espaldon, RObbie “byvoie” 
+- Fat, Andrew Laurence
+- MaraÑo, jasper eric 
+- Tamparong, DHan Micheal 
 
 **How to run**
 
