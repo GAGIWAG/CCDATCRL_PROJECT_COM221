@@ -1,7 +1,6 @@
 import openpyxl
 import customtkinter
 
-
 # Create an empty stack to store data
 stack = []
 
@@ -26,8 +25,11 @@ for row in sheet.iter_rows(values_only=True):
     book_info = {
         'book_id': row[0],
         'title': row[1],
-        'author': row[2]
-    }
+        'author': row[2],
+        'genre': row[3],
+        'keywords': row[4],         
+        'rating': row[5]
+        }  
     stack.append(book_info)
 
 # Create a function to display the details of the selected book
@@ -35,6 +37,9 @@ def display_book_details(book_info):
     book_id_label.configure(text=f"Book ID: {book_info['book_id']}")
     title_label.configure(text=f"Title: {book_info['title']}")
     author_label.configure(text=f"Author: {book_info['author']}")
+    genre_label.configure(text=f"Genre: {book_info['genre']}")
+    keywords_label.configure(text=f"Keyword: {book_info['keywords']}")
+    rating_label.configure(text=f"Rating: {book_info['genre']}")
 
 # Create a function to display the stack as buttons in a scrollable frame
 def display_stack_as_buttons():
@@ -73,6 +78,12 @@ title_label = customtkinter.CTkLabel(app, text="")
 title_label.pack()
 author_label = customtkinter.CTkLabel(app, text="")
 author_label.pack()
+genre_label = customtkinter.CTkLabel(app, text="")
+genre_label.pack()
+keywords_label = customtkinter.CTkLabel(app, text="")
+keywords_label.pack()
+rating_label = customtkinter.CTkLabel(app, text="")
+rating_label.pack()
 
 display_stack_as_buttons()
 

@@ -20,9 +20,9 @@ def side_panel_switch():
 def protract():
     title_frame.place(x=title_frame.winfo_x()+15)
     home_frame.place(x=(title_frame.winfo_x())+30) 
-    lithit_main_frame.place(x=(title_frame.winfo_x())+15)
+    lithit_main_frame.place(x=(title_frame.winfo_x())+35)
     library_main_frame.place(x=(title_frame.winfo_x())+75) 
-    add_books_main_frame.place(x=(title_frame.winfo_x()+15)) 
+    add_books_main_frame.place(x=(title_frame.winfo_x()+60)) 
     print(home_frame.winfo_x())
     search_advanceSearch_frame.place(x=(title_frame.winfo_x())+15)
     search_library_frame_inner.place(x=(title_frame.winfo_x()+615))
@@ -35,9 +35,9 @@ def protract():
 def retract():
     title_frame.place(x=title_frame.winfo_x()-15)
     home_frame.place(x=(title_frame.winfo_x())+45) 
-    lithit_main_frame.place(x=(title_frame.winfo_x())-15)
+    lithit_main_frame.place(x=(title_frame.winfo_x())+60)
     library_main_frame.place(x=(title_frame.winfo_x())+45) 
-    add_books_main_frame.place(x=(title_frame.winfo_x()-15)) 
+    add_books_main_frame.place(x=(title_frame.winfo_x()+80)) 
     print(home_frame.winfo_x())
     search_advanceSearch_frame.place(x=title_frame.winfo_x()-15)
     search_library_frame_inner.place(x=(title_frame.winfo_x()+585))
@@ -48,7 +48,6 @@ def retract():
     else:
         Main_app.after(10,retract)
 
-
 def show_main_frame_content(text):
 
     if text == "Home":
@@ -56,6 +55,8 @@ def show_main_frame_content(text):
         search_frame.pack_forget()
         lithit_frame.pack_forget()
         add_books_frame.pack_forget()
+        open_book_frame.pack_forget()
+        lastread_frame.pack_forget()
         home_frame.pack(fill='both', expand=1)
         
         button_home.configure(state="disabled")
@@ -85,6 +86,8 @@ def show_main_frame_content(text):
         search_frame.pack_forget()
         home_frame.pack_forget()
         add_books_frame.pack_forget()
+        open_book_frame.pack_forget()
+        lastread_frame.pack_forget()
         lithit_frame.pack(fill='both', expand=1)
 
         
@@ -114,6 +117,8 @@ def show_main_frame_content(text):
         lithit_frame.pack_forget()
         home_frame.pack_forget()
         add_books_frame.pack_forget()
+        open_book_frame.pack_forget()
+        lastread_frame.pack_forget()
         search_frame.pack(fill='both', expand=1)
         
         button_home.configure(state="normal")
@@ -143,6 +148,8 @@ def show_main_frame_content(text):
         lithit_frame.pack_forget()
         home_frame.pack_forget()
         add_books_frame.pack_forget()
+        open_book_frame.pack_forget()
+        lastread_frame.pack_forget()
         library_frame.pack(fill='both', expand=1)
 
         button_home.configure(state="normal")
@@ -172,6 +179,8 @@ def show_main_frame_content(text):
         lithit_frame.pack_forget()
         home_frame.pack_forget()
         library_frame.pack_forget()
+        open_book_frame.pack_forget()
+        lastread_frame.pack_forget()
         add_books_frame.pack(fill='both', expand=1)
         
         button_home.configure(state="normal")
@@ -195,13 +204,6 @@ def show_main_frame_content(text):
         else:
             button_addbooks_img = customtkinter.CTkImage((Image.open("icons\\disclickedaddbooks.png")),size=(45,45))
             button_addbooks.configure(image=button_addbooks_img)
-    # else:
-    #     search_frame.pack_forget()
-    #     lithit_frame.pack_forget()
-    #     home_frame.pack_forget()
-    #     add_books_frame.pack_forget()
-    #     library_frame.pack_forget()
-    #     log_in_frame.pack(fill='both', expand=1)    
 
 def log_in_clock():
     
@@ -229,6 +231,7 @@ def to_log_in():
     log_in_frame.pack(fill='both', expand=1)  
 
 def login():
+
     username = login_username_entry.get()
     password = login_password_entry.get()
     if username in user_credentials and user_credentials[username] == password:
@@ -242,10 +245,9 @@ def login():
 
     else:
         msg = CTkMessagebox(title="Error Account not found", message="Account Not Found!",icon="warning", option_1="Ok")
-
+ 
 def agree():
     value = sign_in_checkbox.get()
-    print(value)
     if value == "agree":
         terms_n_conditions = True
         return terms_n_conditions 
@@ -262,16 +264,11 @@ def sign_in():
     password = sign_in_password_entry.get()
     email = sign_in_email_entry.get()
     
-    if username != "" and password !="" and email != "" and agree() == True :
-        if username in user_credentials:
-            msg = CTkMessagebox(message="Username is already taken",icon="warning", option_1="Ok")
-        else:
-            sign_in_username_entry.delete(0,tkinter.END)
-            sign_in_password_entry.delete(0,tkinter.END)
-            sign_in_email_entry.delete(0,tkinter.END)
-            user_credentials[username] = password
-            acc_reg_success()
-            save_to_excel()
+    if username != "" and password != "" and email != "":
+        user_credentials[username] = (email, password)
+        save_user_credentials()
+        to_log_in()
+        
     else:
         msg = CTkMessagebox(message="Please fill  up all the forms",icon="warning", option_1="Ok")
             
@@ -287,26 +284,39 @@ def save_user_credentials():
     dff.to_excel(usercreds_excel_file, index=False)
 
 def add_book():
-    title = input("Enter the title of the book: ")
-    author = input("Enter the author's name: ")
+    title = addbooks_book_detail_input_title_entry.get()
+    author = addbooks_book_detail_input_author_name_entry.get()
+    genre = addbooks_book_detail_input_genre_entry.get()
+    theme = addbooks_book_detail_input_theme_entry.get()
+    rating = addbooks_book_detail_rating.get()
+    keywords = addbooks_book_detail_input_keywords_entry.get()
+    language = addbooks_book_detail_input_language_entry.get()
+    awards = addbooks_book_detail_input_language_entry.get()
+    pubdate = addbooks_book_detail_input_publish_date_entry.get()
 
-    # Load existing data from excel
-    df = pd.read_excel(books_excel_file)
+    if title != "" and author != "":
+        # Load existing data from excel
+        df = pd.read_excel(books_excel_file)
 
-    # Determine the next available Book ID
-    next_book_id = len(df) + 1
+        # Determine the next available Book ID
+        next_book_id = len(df) + 1
 
-    # Create a new DataFrame for the book to be added with the determined Book ID
-    new_book = pd.DataFrame({'bookID': [next_book_id], 'Title': [title], 'Author': [author]})
+        # Create a new DataFrame for the book to be added with the determined Book ID    
+        new_book = pd.DataFrame({'bookID': [next_book_id], 'Title': [title], 'Author': [author], 'Genre': [genre], 'Theme': [theme], 'Rating': [rating], 
+        'Keywords': [keywords], 'Language': [language], 'Awards': [awards], 'Publish Date': [pubdate]})
 
-    # Concatenate the new book DataFrame with the existing DataFrame
-    df = pd.concat([df, new_book], ignore_index=True)
+        # Concatenate the new book DataFrame with the existing DataFrame
+        df = pd.concat([df, new_book], ignore_index=True)
 
-    # Save the updated data to the excel file, overwriting the previous data
-    df.to_excel(books_excel_file, index=False)
-    save_user_credentials()
-    save_to_excel()
-    msg = CTkMessagebox(message="Book Added Succesfully",icon="check", option_1="Ok")
+        # Save the updated data to the excel file, overwriting the previous data
+        df.to_excel(books_excel_file, index=False)
+        save_user_credentials()
+        save_to_excel()
+        msg = CTkMessagebox(message="Book Added Succesfully",icon="check", option_1="Ok")
+        book_stack()
+    
+    else:
+        msg = CTkMessagebox(message="Please fill up Title and book Author",icon="warning", option_1="Ok")
     
 def select_book():
     title = input("Enter the title of the book you want to select: ")
@@ -348,39 +358,111 @@ def save_to_excel():
     save_user_credentials()
     print("Data saved to Excel and user credentials saved to excel successfully!")
 
-def update_last_ten_stack():
-    last_ten_stack.clear()
-    for book_id in list(book_id_linked_list)[-10:]:
-        # Find the corresponding row in the Excel file and append it to the stack
-        for row in sheet.iter_rows(values_only=True):
-            if row[0] == book_id:
-                book_info = {
-                    'book_id': row[0],
-                    'title': row[1],
-                    'author': row[2]
-                }
-                last_ten_stack.append(book_info)
-                                              
-    display_last_ten_stack_as_buttons()
+# def update_lastread_home_stack():
+#     skip_first_row = True
+    
+#     last_five_stack.clear()
+#     for row in sheet.iter_rows(values_only=True):
+#         if skip_first_row:
+#             skip_first_row = False
+#             continue
+
+#         book_info = {
+#             'book_id': row[0],
+#             'title': row[1],
+#             'author': row[2],
+#             'genre': row[3],
+#             'theme' : row[4],
+#             'rating': row[5],
+#             'keywords': row[6]              
+#         }
+        
+#     last_five_stack.append(book_info)
+                             
+#     display_lastread_home_stack_as_buttons()
+
+# # Create a function to display the stack as buttons in a scrollable frame in Lit Hits
+# def display_lastread_home_stack_as_buttons():
+    
+#     for book_info in book_info_stack[-5:]:
+#         book_button = customtkinter.CTkButton(home_lastread_frame_inner,width=455,height=45,hover_color="#4d3d33",fg_color="#614D40", text=f"{book_info['title']} \nby {book_info['author']}",font=("Quando",20), command=lambda info=book_info: display_book_details(info),corner_radius=0)
+#         book_button.pack(padx=5,pady=5)
+
+# Sorting algorithm
+def quicksort(arr):
+    if len(arr) <= 1:   
+        return arr
+    pivot = arr[len(arr) // 2]
+    left = [x for x in arr if x < pivot]
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot] 
+    return quicksort(left) + middle + quicksort(right)
 
 # Create a function to display the stack as buttons in a scrollable frame in Lit Hits
-def display_last_ten_stack_as_buttons():
+def display_lit_hit_data():
+    # Sort in descending order
+    sorted_df = df.sort_values(by='rating', ascending=False)
     
-    for book_info in stack:
-        book_button = customtkinter.CTkButton(lithit_firstShelf_frame,width=985,hover_color="#B88B68",fg_color="#614D40",height=135, text=f"{book_info['title']} \nby {book_info['author']}",font=("Quando",35), command=lambda info=book_info: display_book_details(info),corner_radius=15)
-        book_button.pack(padx=5,pady=5)
+    book_sorted_info = {
+            'title': row[1],
+            'author': row[2],
+            'rating': row[5],       
+        }
+    
+    # Create buttons for each row and display them in the GUI
+    for index,book_sorted_info in sorted_df.iterrows():
+        book_text = f"{book_sorted_info['title']} | Rating :{book_sorted_info['rating']}"
+        lit_hit_button = customtkinter.CTkButton(lithit_firstShelf_frame,width=900,height=125,hover_color="#241811",fg_color="#2D1E16", text=book_text,font=("Quando",20), command=lambda info=book_sorted_info: display_book_details(info),corner_radius=0)
+        lit_hit_button.pack(padx=15, pady=5)
+        in_home_button = customtkinter.CTkButton(home_lithit_frame_inner,anchor="c",width=445,height=40,hover_color="#241811",fg_color="#2D1E16", text=book_text,font=("Quando",13), command=lambda info=book_sorted_info: display_book_details(info),corner_radius=0)
+        in_home_button.pack(padx=2,pady=5)
 
 # Create a function to display the details of the selected book
 def display_book_details(book_info):
-    msg = CTkMessagebox(message=f"Book ID: {book_info['book_id']} \n Title: {book_info['title']}\nAuthor: {book_info['author']}",icon="info", option_1="Ok")
+    search_frame.pack_forget()
+    lithit_frame.pack_forget()
+    home_frame.pack_forget()
+    library_frame.pack_forget()
+    add_books_frame.pack_forget()
+    lastread_frame.pack_forget()
+    open_book_frame.pack(fill='both', expand=1)
 
+    book_title_label.configure(text=book_info['title'])
+    book_author_label.configure(text=book_info['author'])
+    book_genre_placeholder.configure(text=book_info['genre'])
+    book_theme_placeholder.configure(text=book_info['theme'])
+    book_keywords_placeholder.configure(text=book_info['keywords'])
+    book_rating_placeholder.configure(text=book_info['rating'])
+    
+    last_read_append(book_info)
+
+# Function to add a button to the frame and the stack
+def last_read_append(book_info):
+    last_read_button = customtkinter.CTkButton(lRead_firstShelf_frame,width=985,hover_color="#B88B68",fg_color="#614D40",height=135, text=f"{book_info['title']} \nby {book_info['author']}",font=("Quando",35), command=lambda info=book_info: display_book_details(info),corner_radius=15)
+    last_read_button.pack(pady=2)
+    button_stack.append(last_read_button)
+    last_home_read_button = customtkinter.CTkButton(home_lastread_frame_inner,width=445,height=135,hover_color="#B88B68",fg_color="#614D40", text=f"{book_info['title']} \nby {book_info['author']}",font=("Quando",13), command=lambda info=book_info: display_book_details(info),corner_radius=15)
+    last_home_read_button.pack(pady=2)
+    
 # Create a function to display the stack as buttons in a scrollable frame in Library
-def display_stack_as_buttons():
+def book_stack():
 
     # Create buttons for each book in the stack and add them to the frame
-    for book_info in stack:
+    for book_info in book_info_stack:
         book_button = customtkinter.CTkButton(library_bookshelf_frame,width=1200,hover_color="#3D291E",fg_color="#614D40",height=135, text=f"{book_info['title']} \nby {book_info['author']}",font=("Quando",35), command=lambda info=book_info: display_book_details(info),corner_radius=15)
         book_button.pack(padx=5,pady=5)
+        
+
+def open_last_read():
+    search_frame.pack_forget()
+    lithit_frame.pack_forget()
+    home_frame.pack_forget()
+    library_frame.pack_forget()
+    add_books_frame.pack_forget()
+    lastread_frame.pack_forget()
+    open_book_frame.pack_forget()
+    lastread_frame.pack(fill='both', expand=1)
+
 
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\FOR DATABASE\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\#
 
@@ -396,6 +478,13 @@ book_id_linked_list = clc.deque()
 
 # Create a stack to store the last ten values
 last_ten_stack = []
+last_five_stack = []
+
+# Create a stack to store the buttons
+button_stack = clc.deque()
+
+# Create a stack to store the last 10 button data
+last_10_stacks = clc.deque(maxlen=10)
 
 # Load existing user credentials from excel
 if os.path.exists(usercreds_excel_file):
@@ -407,13 +496,8 @@ if os.path.exists(usercreds_excel_file):
 df = pd.read_excel(books_excel_file)
 dff = pd.read_excel(usercreds_excel_file)
 
-# add_book()
-# select_book()
-# delete_book()
-# save_to_excel()
-
 # Create an empty stack to store data
-stack = []
+book_info_stack = []
 
 # Load the Excel file
 workbook = openpyxl.load_workbook(books_excel_file)
@@ -433,9 +517,13 @@ for row in sheet.iter_rows(values_only=True):
     book_info = {
         'book_id': row[0],
         'title': row[1],
-        'author': row[2]
+        'author': row[2],
+        'genre': row[3],
+        'theme' : row[4],
+        'rating': row[5],
+        'keywords': row[6]  
     }
-    stack.append(book_info)
+    book_info_stack.append(book_info)
 
 
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\FOR GUI\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\#
@@ -454,7 +542,7 @@ screen_height = 900
 
 # Calculate the desired window size as a fraction of the screen dimensions
 window_width = 1360  
-window_height = 765  
+window_height = 765     
 
 # Set the window size and position it in the center of the screen
 x_position = (screen_width - window_width) // 2
@@ -470,9 +558,11 @@ main_content_frame.place(x = 50, y = 0)
 
 home_frame = customtkinter.CTkFrame(main_content_frame,width=Main_app.winfo_screenwidth(),height=Main_app.winfo_screenheight(),fg_color="#F2E8BD")
 lithit_frame = customtkinter.CTkFrame(main_content_frame,width=Main_app.winfo_screenwidth(),height=Main_app.winfo_screenheight(),fg_color="#F2E8BD")
+lastread_frame = customtkinter.CTkFrame(main_content_frame,width=Main_app.winfo_screenwidth(),height=Main_app.winfo_screenheight(),fg_color="#F2E8BD")
 search_frame = customtkinter.CTkFrame(main_content_frame,width=Main_app.winfo_screenwidth(),height=Main_app.winfo_screenheight(),fg_color="#F2E8BD")
 library_frame = customtkinter.CTkFrame(main_content_frame,width=Main_app.winfo_screenwidth(),height=Main_app.winfo_screenheight(),fg_color="#F2E8BD")
 add_books_frame = customtkinter.CTkFrame(main_content_frame,width=Main_app.winfo_screenwidth(),height=Main_app.winfo_screenheight(),fg_color="#F2E8BD")
+open_book_frame = customtkinter.CTkFrame(main_content_frame,width=Main_app.winfo_screenwidth(),height=Main_app.winfo_screenheight(),fg_color="#F2E8BD")
 
 # Side bar Frames
 title_frame = customtkinter.CTkFrame(Main_app,width=150,height=Main_app.winfo_screenheight(),fg_color="#C8DF8C",corner_radius=0,border_width=1,border_color="#C8DF8C")
@@ -564,7 +654,63 @@ login_register_button = customtkinter.CTkButton(login_clock_frame,text="Register
 login_register_button.place(x=440,y=255)
 log_in_clock()
 
-# Main Content Frames
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\MAIN CONTENT FRAMES\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\#
+
+# Opened Book Frame
+
+opened_book_picture_frame = customtkinter.CTkFrame(open_book_frame, width=250,height=300,fg_color="#414240",corner_radius=0)
+opened_book_picture_frame.place(x=140,y=20)
+
+opened_book_author_title_frame = customtkinter.CTkFrame(open_book_frame, width=720,height=90,fg_color="#B88B68",corner_radius=0)
+opened_book_author_title_frame.place(x=430, y=20)
+
+opened_book_other_text_frame = customtkinter.CTkFrame(open_book_frame, width=720,height=170,fg_color="#614D40",corner_radius=0)
+opened_book_other_text_frame.place(x=430, y=110)
+
+opened_book_synopsis_title = customtkinter.CTkFrame(open_book_frame, width=1005,height=80,fg_color="#614D40",corner_radius=0)
+opened_book_synopsis_title.place(x=140, y=350)
+
+opened_book_synopsis_textbody = customtkinter.CTkFrame(open_book_frame, width=1005,height=800,fg_color="#B88B68",corner_radius=0)
+opened_book_synopsis_textbody.place(x=140, y=420)
+
+book_status_combobox = customtkinter.CTkComboBox(open_book_frame,border_color="#614D40", fg_color="#B88B68", dropdown_fg_color="#B88B68", values=["Book Status", "Reading", "Plan to read", "Completed", "Dropped"]) 
+book_status_combobox.place(x=430, y=290)
+
+book_title_label = customtkinter.CTkLabel(opened_book_author_title_frame, width=720, height=40, font=("Quando", 25),  text_color="white", text="Book title goes here.")
+book_title_label.place(x=10, y=10)
+
+book_author_label = customtkinter.CTkLabel(opened_book_author_title_frame, width=720, height=20, font=("Quando", 20),  text_color="white", text="Author name goes here.")
+book_author_label.place(x=10, y=60)
+
+book_genre_title = customtkinter.CTkLabel(opened_book_other_text_frame, anchor=customtkinter.W, width=150, height=30, font=("Quando", 22), text_color="white", text="GENRE: ")
+book_genre_title.place(x=10, y=20)
+
+book_genre_placeholder = customtkinter.CTkLabel(opened_book_other_text_frame, anchor=customtkinter.W,width=570, height=30, font=("Quando", 22), text_color="white",  text="Genre1, Genre2, Genre3")
+book_genre_placeholder.place(x=170, y=20)#
+
+book_theme_title = customtkinter.CTkLabel(opened_book_other_text_frame, anchor=customtkinter.W, width=150, height=30, font=("Quando", 22), text_color="white",  text="THEME: ")
+book_theme_title.place(x=10, y=55)
+
+book_theme_placeholder = customtkinter.CTkLabel(opened_book_other_text_frame,anchor=customtkinter.W, width=570, height=30, font=("Quando", 22),  text_color="white", text="Theme1, Theme2, Theme3")
+book_theme_placeholder.place(x=170, y=55)#
+
+book_keywords_title = customtkinter.CTkLabel(opened_book_other_text_frame, anchor=customtkinter.W, width=200, height=30, font=("Quando", 22), text_color="white",  text="KEYWORDS: ")
+book_keywords_title.place(x=10, y=90)
+
+book_keywords_placeholder = customtkinter.CTkLabel(opened_book_other_text_frame,anchor=customtkinter.W, width=570, height=30, font=("Quando", 22), text_color="white",  text="Keyword1, Keyword2, Keyword3")
+book_keywords_placeholder.place(x=170, y=90)#
+
+book_rating_title = customtkinter.CTkLabel(opened_book_other_text_frame, anchor=customtkinter.W, width=150,  height=30, font=("Quando", 22), text_color="white",  text="RATING: ")
+book_rating_title.place(x=10, y=125)
+
+book_rating_placeholder = customtkinter.CTkLabel(opened_book_other_text_frame,anchor=customtkinter.W, width=570, height=30, font=("Quando", 22), text_color="white",  text="5/5")
+book_rating_placeholder.place(x=170, y=125)#
+
+book_synopsis_title = customtkinter.CTkLabel(opened_book_synopsis_title, anchor=customtkinter.W, width=1005, height=85, font=("Quando", 45),  text_color="white", text="SYNOPSIS")
+book_synopsis_title.place(x=15, y=-10)#
+
+book_synopsis_body = customtkinter.CTkLabel(opened_book_synopsis_textbody, width=1005, height=800, font=("Quando", 25), wraplength=980, justify="center", text_color="white", text="My name is Yoshikage Kira. I'm 33 years old. My house is in the northeast section of Morioh, where all the villas are, and I am not married. I work as an employee for the Kame Yu department stores, and I get home every day by 8 PM at the latest. I don't smoke, but I occasionally drink. I'm in bed by 11 PM, and make sure I get eight hours of sleep, no matter what. After having a glass of warm milk and doing about twenty minutes of stretches before going to bed, I usually have no problems sleeping until morning. Just like a baby, I wake up without any fatigue or stress in the morning. I was told there were no issues at my last check-up. I'm trying to explain that I'm a person who wishes to live a very quiet life. I take care not to trouble myself with any enemies, like winning and losing, that would cause me to lose sleep at night. That is how I deal with society, and I know that is what brings me happiness. Although, if I were to fight I wouldn't lose to anyone.")
+book_synopsis_body.place(x=0, y=-160)#
 
 # Home Content
 searchbarx=((window_width/2)-325)
@@ -603,20 +749,8 @@ home_upload_frame_img.place(x = 270, y = 80)
 home_lithit_frame_outer = customtkinter.CTkFrame(home_frame,width=485,height=510,fg_color="transparent",corner_radius=0)
 home_lithit_frame_outer.place(x = 176, y = 260)
 
-home_lithit_frame_inner = customtkinter.CTkFrame(home_lithit_frame_outer,width=750,height=642,fg_color="#B88B68",corner_radius=0)
+home_lithit_frame_inner = customtkinter.CTkScrollableFrame(home_lithit_frame_outer,width=455,height=450,fg_color="#B88B68",corner_radius=0)
 home_lithit_frame_inner.place(x = 10, y = 40)
-
-home_lithit_firstshelf = customtkinter.CTkFrame(home_lithit_frame_outer, width=420, height=100, fg_color="#614D40", corner_radius=0)
-home_lithit_firstshelf.place(x = 35, y = 60)
-
-home_lithit_secondshelf = customtkinter.CTkFrame(home_lithit_frame_outer, width=420, height=100, fg_color="#614D40", corner_radius=0)
-home_lithit_secondshelf.place(x = 35, y = 170)
-
-home_lithit_thirdshelf = customtkinter.CTkFrame(home_lithit_frame_outer, width=420, height=100, fg_color="#614D40", corner_radius=0)
-home_lithit_thirdshelf.place(x = 35, y = 280)
-
-home_lithit_fourthshelf = customtkinter.CTkFrame(home_lithit_frame_outer, width=420, height=100, fg_color="#614D40", corner_radius=0)
-home_lithit_fourthshelf.place(x = 35, y = 390)
 
 home_lithit_button = customtkinter.CTkButton(home_lithit_frame_outer,width=150,height=30,font=("Quando",20),fg_color="#737373",corner_radius=0,text="Literary Hits")
 home_lithit_button.place(x = 10, y = 10)
@@ -625,49 +759,54 @@ home_arrowlit_button_img = customtkinter.CTkImage((Image.open("icons\\kanan.png"
 home_arrowlit_button_label = customtkinter.CTkButton(home_frame, image=home_arrowlit_button_img, width=25, height=25, fg_color="transparent", corner_radius=0, text="")
 home_arrowlit_button_label.place(x = 635, y = 270)
 
-home_lastread_frame_outer = customtkinter.CTkFrame(home_frame,width=485,height=510,fg_color="transparent",corner_radius=0)
+home_lastread_frame_outer = customtkinter.CTkFrame(home_frame,width=485,height=490,fg_color="transparent",corner_radius=0)
 home_lastread_frame_outer.place(x = 670, y = 260)
 
-home_lastread_frame_inner = customtkinter.CTkFrame(home_lastread_frame_outer,width=642,height=642,fg_color="#B88B68",corner_radius=0)
+home_lastread_frame_inner = customtkinter.CTkScrollableFrame(home_lastread_frame_outer,width=465,height=440,fg_color="#B88B68",corner_radius=0)
 home_lastread_frame_inner.place(x = 10, y = 40)
 
-home_lastread_firstshelf = customtkinter.CTkFrame(home_lastread_frame_outer, width=420, height=100, fg_color="#614D40", corner_radius=0)
-home_lastread_firstshelf.place(x = 35, y = 60)
-
-home_lastread_secondshelf = customtkinter.CTkFrame(home_lastread_frame_outer, width=420, height=100, fg_color="#614D40", corner_radius=0)
-home_lastread_secondshelf.place(x = 35, y = 170)
-
-home_lastread_thirdshelf = customtkinter.CTkFrame(home_lastread_frame_outer, width=420, height=100, fg_color="#614D40", corner_radius=0)
-home_lastread_thirdshelf.place(x = 35, y = 280)
-
-home_lastread_fourthshelf = customtkinter.CTkFrame(home_lastread_frame_outer, width=420, height=100, fg_color="#614D40", corner_radius=0)
-home_lastread_fourthshelf.place(x = 35, y = 390)
-
-home_lastread_button = customtkinter.CTkButton(home_lastread_frame_outer,width=150,height=30,font=("Quando",20),fg_color="#737373",corner_radius=0,text="Last Read")
+home_lastread_button = customtkinter.CTkButton(home_lastread_frame_outer,width=150,height=30,font=("Quando",20),fg_color="#737373",corner_radius=0,text="Last Read",command=open_last_read)
 home_lastread_button.place(x = 10, y = 10)
 
 home_arrowlast_button_img = customtkinter.CTkImage((Image.open("icons\\kanan.png")))
-home_arrowlast_button_label = customtkinter.CTkButton(home_frame, image=home_arrowlast_button_img, width=25, height=25, fg_color="transparent", corner_radius=0, text="")
+home_arrowlast_button_label = customtkinter.CTkButton(home_frame, image=home_arrowlast_button_img, width=25, height=25, fg_color="transparent", corner_radius=0, text="",command=open_last_read)
 home_arrowlast_button_label.place(x = 1130, y = 270)
 
-# lithit Content
+# update_lastread_home_stack()
+
+# Lit Hit Content
 lithit_main_frame = customtkinter.CTkFrame(lithit_frame, width=1360, height=765,fg_color="#F2E8BD")
 lithit_main_frame.place(x=0, y=0)
 
 lithit_search_entry_frame = customtkinter.CTkFrame(lithit_main_frame,width=650,height=50,fg_color="transparent",corner_radius=45)
-lithit_search_entry_frame.place(x = 440, y = 10)
+lithit_search_entry_frame.place(x = 420, y = 20)
 
 lithit_search_entry = customtkinter.CTkEntry(lithit_search_entry_frame,width=550,height=50,fg_color="white",corner_radius=45,placeholder_text="Search Titles...",font=("Quando",20))
-lithit_search_entry.place(x = 5,y=5)
+lithit_search_entry.place(x = 0,y=0)
 
-lithit_search_entry_button_img = customtkinter.CTkImage((Image.open("icons\searchicon.png")),size=(30,30))
+lithit_search_entry_button_img = customtkinter.CTkImage((Image.open("icons\\searchicon.png")),size=(30,30))
 lithit_search_entry_button = customtkinter.CTkButton(lithit_search_entry,text="",image=lithit_search_entry_button_img,width=30,height=30,fg_color="white",corner_radius=0,border_color="white")
 lithit_search_entry_button.place(x = 500 , y=5)
 
-lithit_firstShelf_frame = customtkinter.CTkScrollableFrame(lithit_main_frame, width=1165 , height=650, fg_color="#B88B68")
-lithit_firstShelf_frame.place(x=100, y=70)
+lithit_firstShelf_frame = customtkinter.CTkScrollableFrame(lithit_main_frame, width=1000 , height=635, fg_color="#B88B68")
+lithit_firstShelf_frame.place(x=170, y=120)
 
-update_last_ten_stack()
+display_lit_hit_data()
+
+# Last Read Content
+lRead_search_entry_frame = customtkinter.CTkFrame(lastread_frame,width=650,height=50,fg_color="transparent",corner_radius=45)
+lRead_search_entry_frame.place(x = 440, y = 10)
+
+lRead_search_entry = customtkinter.CTkEntry(lRead_search_entry_frame,width=550,height=50,fg_color="white",corner_radius=45,placeholder_text="Search Titles...",font=("Quando",20))
+lRead_search_entry.place(x = 5,y=5)
+
+lRead_search_entry_button_img = customtkinter.CTkImage((Image.open("icons\\searchicon.png")),size=(30,30))
+lRead_search_entry_button = customtkinter.CTkButton(lRead_search_entry,text="",image=lRead_search_entry_button_img,width=30,height=30,fg_color="white",corner_radius=0,border_color="white")
+lRead_search_entry_button.place(x = 500 , y=5)
+
+lRead_firstShelf_frame = customtkinter.CTkScrollableFrame(lastread_frame, width=1165 , height=650, fg_color="#B88B68")
+lRead_firstShelf_frame.place(x=100, y=70)
+
 
 # Search Content
 search_advanceSearch_frame = customtkinter.CTkFrame(search_frame,width=700,height=1080,fg_color="#433F3D",corner_radius=0)
@@ -676,7 +815,7 @@ search_advanceSearch_frame.place(x = (window_width/2)-710, y = 0)
 search_library_frame_inner = customtkinter.CTkFrame(search_frame,width=1509,height=1122,fg_color="#B88B68",corner_radius=0)
 search_library_frame_inner.place(x = 600, y = 0)
         
-search_advanceSearch_label = customtkinter.CTkLabel(search_advanceSearch_frame, anchor=customtkinter.W, font=("Quando", 25), text_color="white", width=450, height=69, fg_color="transparent", corner_radius=0, text="Advance Search")
+search_advanceSearch_label = customtkinter.CTkLabel(search_advanceSearch_frame, anchor=customtkinter.W, font=("Quando", 35), text_color="white", width=450, height=69, fg_color="transparent", corner_radius=0, text="Advanced Search")
 search_advanceSearch_label.place(x=180, y=20)
 
 search_genre_label = customtkinter.CTkLabel(search_advanceSearch_frame, anchor=customtkinter.E, font=("Quando", 20), text_color="white", width=70, height=30, fg_color="transparent", corner_radius=0, text="Genre")
@@ -696,61 +835,37 @@ search_theme_label.place(x=210, y=200)
         
 search_theme_entry = customtkinter.CTkEntry(search_advanceSearch_frame,width=200,height=30,fg_color="white",corner_radius=0,placeholder_text="",font=("Quando",20),border_width=0)
 search_theme_entry.place(x = 300,y = 200)
-
-search_ownership_label = customtkinter.CTkLabel(search_advanceSearch_frame, anchor=customtkinter.E, font=("Quando",20), text_color="white", width=70, height=30, fg_color="transparent", corner_radius=0, text="Ownership")
-search_ownership_label.place(x=180, y=200)
         
-search_ownership_entry = customtkinter.CTkEntry(search_advanceSearch_frame,width=200,height=30,fg_color="white",corner_radius=0,placeholder_text="",font=("Quando",20),border_width=0)
-search_ownership_entry.place(x = 300,y = 200)
-
 search_rating_label = customtkinter.CTkLabel(search_advanceSearch_frame, anchor=customtkinter.E, font=("Quando", 20), text_color="white", width=70, height=30, fg_color="transparent", corner_radius=0, text="Rating")
 search_rating_label.place(x=225, y=250)
         
 search_rating_entry = customtkinter.CTkEntry(search_advanceSearch_frame,width=200,height=30,fg_color="white",corner_radius=0,placeholder_text="",font=("Quando",20),border_width=0)
 search_rating_entry.place(x = 300,y = 250)
 
-search_keyword_label = customtkinter.CTkLabel(search_advanceSearch_frame, anchor=customtkinter.E, font=("Quando", 20), text_color="white", width=70, height=30, fg_color="transparent", corner_radius=0, text="Keywords")
-search_keyword_label.place(x=190, y=300)
-        
-search_keyword_entry = customtkinter.CTkEntry(search_advanceSearch_frame,width=200,height=30,fg_color="white",corner_radius=0,placeholder_text="",font=("Quando",20),border_width=0)
-search_keyword_entry.place(x = 300,y = 300)
-
-search_language_label = customtkinter.CTkLabel(search_advanceSearch_frame, anchor=customtkinter.E, font=("Quando", 20), text_color="white", width=70, height=30, fg_color="transparent", corner_radius=0, text="Language")
-search_language_label.place(x=195, y=350)
-        
-search_award_entry = customtkinter.CTkEntry(search_advanceSearch_frame,width=200,height=30,fg_color="white",corner_radius=0,placeholder_text="",font=("Quando",20),border_width=0)
-search_award_entry.place(x = 300,y = 350)
-
-search_award_label = customtkinter.CTkLabel(search_advanceSearch_frame, anchor=customtkinter.E, font=("Quando", 20), text_color="white", width=70, height=30, fg_color="transparent", corner_radius=0, text="Awards")
-search_award_label.place(x=215, y=400)
-        
-search_award_entry = customtkinter.CTkEntry(search_advanceSearch_frame,width=200,height=30,fg_color="white",corner_radius=0,placeholder_text="",font=("Quando",20),border_width=0)
-search_award_entry.place(x = 300,y = 400)
-
 search_publishDate_label = customtkinter.CTkLabel(search_advanceSearch_frame, anchor=customtkinter.E, font=("Quando",20), text_color="white", width=70, height=30, fg_color="transparent", corner_radius=0, text="Publish Date")
-search_publishDate_label.place(x=160, y=450)
+search_publishDate_label.place(x=160, y=300)
         
 search_publishDate_entry = customtkinter.CTkEntry(search_advanceSearch_frame,width=200,height=30,fg_color="white",corner_radius=0,placeholder_text="",font=("Quando",20),border_width=0)
-search_publishDate_entry.place(x = 300,y = 450)
+search_publishDate_entry.place(x = 300,y = 300)
 
-search_resetFilter_button = customtkinter.CTkButton(search_advanceSearch_frame,width=150,height=40,font=("Quando",20),fg_color="#737373",corner_radius=60,text="Last Read")
-search_resetFilter_button.place(x = 150, y = 500)   
+search_resetFilter_button = customtkinter.CTkButton(search_advanceSearch_frame,width=150,height=40,font=("Quando",20),fg_color="#c0c0c0",text_color="black" ,hover_color="dark grey" ,corner_radius=60,text="Reset")
+search_resetFilter_button.place(x = 150, y = 350)   
 
-search_search_button = customtkinter.CTkButton(search_advanceSearch_frame,width=150,height=40,font=("Quando",20),fg_color="#737373",corner_radius=60,text="Search")
-search_search_button.place(x = 330, y = 500)
+search_search_button = customtkinter.CTkButton(search_advanceSearch_frame,width=150,height=40,font=("Quando",20),fg_color="#C8DF8C",text_color="black" ,hover_color="#8c9c62" ,corner_radius=60,text="Search")
+search_search_button.place(x = 330, y = 350)
 
 # Library Content
 
-library_main_frame = customtkinter.CTkFrame(library_frame,width=1360,height=765,fg_color="#614D40",corner_radius=0)
+library_main_frame = customtkinter.CTkFrame(library_frame,width=1360,height=765,fg_color="#F2E8BD",corner_radius=0)
 library_main_frame.place(x = 0, y = 0)
 
-library_library_inner_frame = customtkinter.CTkFrame(library_main_frame,width=1245,height=650,fg_color="#433F3D",corner_radius=0)
-library_library_inner_frame.place(x = 50, y = 100)
+library_library_inner_frame = customtkinter.CTkFrame(library_main_frame,width=1000,height=800,fg_color="#433F3D",corner_radius=0)
+library_library_inner_frame.place(x = 170, y = 70)
 
-library_bookshelf_frame = customtkinter.CTkScrollableFrame(library_library_inner_frame,width=1185,height=620,fg_color="#433F3D")
-library_bookshelf_frame.place(x = 20, y = 75)
+library_bookshelf_frame = customtkinter.CTkScrollableFrame(library_library_inner_frame,width=900,height=610,fg_color="#B88B68")
+library_bookshelf_frame.place(x = 40, y = 78)
 
-display_stack_as_buttons()
+book_stack()
 
 library_search_entry_frame = customtkinter.CTkFrame(library_main_frame,width=650,height=50,fg_color="transparent",corner_radius=45)
 library_search_entry_frame.place(x = 725,y=20)
@@ -776,12 +891,12 @@ library_dropped_button.place(x = 360, y = 5)
 
 # Addbooks Content
 add_books_main_frame = customtkinter.CTkFrame(add_books_frame,width=1260,height=760,fg_color="transparent",corner_radius=0)
-add_books_main_frame.place(x=-60,y=0)
+add_books_main_frame.place(x=60,y=0)
 
 addbooks_upload_cover_frame = customtkinter.CTkFrame(add_books_main_frame,width=250,height=360,fg_color="#414240",corner_radius=0)
 addbooks_upload_cover_frame.place(x=140,y=10)
 
-addbooks_upload_cover_button_img = customtkinter.CTkImage(Image.open('icons\coverbookupload.png'),size=(25,25))
+addbooks_upload_cover_button_img = customtkinter.CTkImage(Image.open('icons\\coverbookupload.png'),size=(25,25))
 addbooks_upload_cover_button = customtkinter.CTkButton(add_books_main_frame,image=addbooks_upload_cover_button_img,text_color="black",font=("Quando",15),text="Upload Cover",width=250,height=50,fg_color="#C8C8C8",corner_radius=25)
 addbooks_upload_cover_button.place(x=140,y=380)
 
@@ -824,8 +939,8 @@ addbooks_book_detail_input_theme_entry.place(x=135,y=65)
 addbooks_book_detail_input_keywords_entry = customtkinter.CTkEntry(addbooks_book_detail_input_inner_frame,font=("Quando",12),width=565,height=45,fg_color="#F1F1F1",corner_radius=25)
 addbooks_book_detail_input_keywords_entry.place(x=135,y=120)
 
-addbooks_book_detail_input_rating_entry = customtkinter.CTkEntry(addbooks_book_detail_input_inner_frame,font=("Quando",12),width=565,height=45,fg_color="#F1F1F1",corner_radius=25)
-addbooks_book_detail_input_rating_entry.place(x=135,y=175)
+addbooks_book_detail_input_language_entry = customtkinter.CTkEntry(addbooks_book_detail_input_inner_frame,font=("Quando",12),width=565,height=45,fg_color="#F1F1F1",corner_radius=25)
+addbooks_book_detail_input_language_entry.place(x=135,y=175)
 
 addbooks_book_detail_rating = customtkinter.StringVar(value="other")
 
@@ -854,8 +969,8 @@ addbooks_synopsis_textbox = customtkinter.CTkTextbox(addbooks_synopsis_frame,wid
 addbooks_synopsis_textbox.place(x=0,y=85)
 
 addbooks_upload_button_img = customtkinter.CTkImage((Image.open("icons\\uploadpic.png")),size=(35,35))
-addbooks_upload_button = customtkinter.CTkButton(add_books_main_frame,image=addbooks_upload_button_img,fg_color="#B88B68",text="",width=25,height=75,corner_radius=100,hover_color="#737373")
-addbooks_upload_button.place(x =1085, y = 685)
+addbooks_upload_button = customtkinter.CTkButton(add_books_main_frame,image=addbooks_upload_button_img,fg_color="#B88B68",text="",width=50,height=75,corner_radius=0,hover_color="#737373")
+addbooks_upload_button.place(x =1120, y = 685)
 
 # Title and Icon Frame Content
 button_stackread_img = customtkinter.CTkImage((Image.open("icons\\stackreadicon.png")),size=(45,45))

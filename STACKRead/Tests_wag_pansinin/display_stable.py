@@ -6,7 +6,7 @@ book_id_stack = []
 title_stack = []
 
 # Replace 'your_excel_file.xlsx' with the path to your Excel file
-excel_file = 'your_excel_file.xlsx'
+excel_file = 'spreadsheets\\books.xlsx'
 
 # Load the Excel file
 workbook = openpyxl.load_workbook(excel_file)

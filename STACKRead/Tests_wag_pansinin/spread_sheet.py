@@ -33,7 +33,7 @@ for row in sheet.iter_rows(values_only=True):
 # Create a function to update the last ten values stack
 def update_last_ten_stack():
     last_ten_stack.clear()
-    for book_id in list(book_id_linked_list)[-10:]:
+    for book_id in list(book_id_linked_list)[-3:]:
         # Find the corresponding row in the Excel file and append it to the stack
         for row in sheet.iter_rows(values_only=True):
             if row[0] == book_id:
